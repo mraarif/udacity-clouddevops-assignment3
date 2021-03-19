@@ -38,6 +38,16 @@ commands:
               exit 1
             fi
 
+  notify:
+    description: notify slack
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
 jobs:
   build-frontend:
     docker:
@@ -56,6 +66,8 @@ jobs:
           paths: [ frontend/node_modules ]
           key: frontend-build
 
+      - notify
+
   build-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -73,6 +85,8 @@ jobs:
           paths: [ backend/node_modules ]
           key: backend-build
 
+      - notify
+
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -89,6 +103,7 @@ jobs:
       - save_cache:
           paths: [ frontend/node_modules ]
           key: frontend-build
+      - notify
 
   test-backend:
     docker:
@@ -106,6 +121,7 @@ jobs:
       - save_cache:
           paths: [ backend/node_modules ]
           key: backend-build
+      - notify
 
   scan-frontend:
     docker:
@@ -124,6 +140,7 @@ jobs:
       - save_cache:
           paths: [ frontend/node_modules ]
           key: frontend-build
+      - notify
 
   scan-backend:
     docker:
@@ -142,6 +159,7 @@ jobs:
       - save_cache:
           paths: [ backend/node_modules ]
           key: backend-build
+      - notify
 
   deploy-infrastructure:
     docker:
@@ -177,6 +195,7 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   configure-infrastructure:
     docker:
@@ -197,6 +216,7 @@ jobs:
             --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   run-migrations:
     docker:
@@ -220,6 +240,7 @@ jobs:
 
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   deploy-frontend:
     docker:
@@ -251,6 +272,7 @@ jobs:
 
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   deploy-backend:
     docker:
@@ -279,6 +301,7 @@ jobs:
 
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   smoke-test:
     docker:
@@ -315,6 +338,7 @@ jobs:
 
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - notify
 
   cloudfront-update:
     docker:
@@ -338,17 +362,7 @@ jobs:
 
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-
-  notify:
-    docker:
-      - image: alpine:latest
-    steps:
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - notify
 
   cleanup:
     docker:
@@ -399,6 +413,5 @@ workflows:
           requires: [ deploy-backend, deploy-frontend ]
       - cloudfront-update:
           requires: [ smoke-test ]
-      - notify
       - cleanup:
           requires: [ cloudfront-update ]
