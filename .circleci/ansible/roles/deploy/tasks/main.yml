@@ -1,0 +1,8 @@
+- name: Copy index test page
+  template:
+    src: "backend/.dist"
+    dest: "~/web/"
+
+- name: Executing node
+  shell: |
+    pm2 start ~/web/index.js -f

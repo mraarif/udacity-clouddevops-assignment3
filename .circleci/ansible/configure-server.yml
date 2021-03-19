@@ -2,6 +2,7 @@
 
 - name: "configuration play." 
   hosts: web
+  become: true
   user: ubuntu
   gather_facts: false
   vars:
@@ -10,11 +11,18 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    - name: "wait 600 seconds for target connection to become reachable/usable."
-      # Your code here
+    - name: wait 600 seconds for target connection to become reachable/usable
+      pause:
+        seconds: 600
 
-    - name: "install python for Ansible."
-      # Your code here
+    - name: install python for Ansible
+      apt:
+        pkg:
+          - python3.8-dev
+          - python3.8-distutils
+      tags:
+        - install
+        - install:system-requirements
 
   roles:
-    # Your code here
+    configure-server
