@@ -189,7 +189,7 @@ jobs:
             # Your code here
             exit 1
 
-       - destroy-environment:
+      - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   run-migrations:
