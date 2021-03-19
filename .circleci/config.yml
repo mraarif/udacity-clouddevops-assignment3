@@ -72,7 +72,7 @@ jobs:
           key: backend-build
 
       - slack/notify:
-          event: pass
+          event: fail
           template: basic_fail_1
 
   test-frontend:
