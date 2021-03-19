@@ -153,6 +153,7 @@ jobs:
           name: backend scan
           command: |
             cd backend
+            npm i
             npm audit --audit-level=critical
             npm audit fix --audit-level=critical --force
 
