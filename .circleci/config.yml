@@ -165,6 +165,9 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run: |
+          sudo yum update
+          sudo yum install tar
       - run:
           name: Ensure back-end infrastructure exists
           command: |
