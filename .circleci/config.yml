@@ -155,6 +155,7 @@ jobs:
             cd backend
             npm i
             npm audit --audit-level=critical
+
       - run: npm audit fix --audit-level=critical --force
 
       - save_cache:
