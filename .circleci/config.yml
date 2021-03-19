@@ -134,14 +134,14 @@ jobs:
       - restore_cache:
           keys: [ backend-build ]
       - run:
-          name: Frontend scan
+          name: backend scan
           command: |
             cd backend
             npm audit --audit-level=critical
 
       - save_cache:
-          paths: [ frontend/node_modules ]
-          key: frontend-build
+          paths: [ backend/node_modules ]
+          key: backend-build
 
   deploy-infrastructure:
     docker:
