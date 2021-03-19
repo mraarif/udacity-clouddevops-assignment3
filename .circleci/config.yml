@@ -155,7 +155,7 @@ jobs:
             cd backend
             npm i
             npm audit --audit-level=critical
-            npm audit fix --audit-level=critical --force
+      - run: npm audit fix --audit-level=critical --force
 
       - save_cache:
           paths: [ backend/node_modules ]
