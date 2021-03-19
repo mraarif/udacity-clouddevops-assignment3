@@ -193,8 +193,8 @@ jobs:
       - run:
           name: Configure server
           command: |
-             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/configuire-server.yml \
-            --extra-vars db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/configuire-server.yml \
+            --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
