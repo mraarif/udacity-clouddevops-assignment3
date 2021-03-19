@@ -43,7 +43,26 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          template: basic_fail_1
+          custom: |
+            {
+            	"blocks": [
+            		{
+            			"type": "header",
+            			"text": {
+            				"type": "plain_text",
+            				"text": "Build Failed :x:",
+            				"emoji": true
+            			}
+            		},
+            		{
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": "Build #([${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL})) failed"
+            			}
+            		}
+            	]
+            }
       - slack/notify:
           event: pass
           custom: |
