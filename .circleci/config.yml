@@ -167,7 +167,7 @@ jobs:
       - checkout
       - run: |
           yum update
-          yum install tar
+          yum install tar -y
       - run:
           name: Ensure back-end infrastructure exists
           command: |
