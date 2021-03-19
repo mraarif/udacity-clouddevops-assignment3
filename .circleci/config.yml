@@ -53,7 +53,7 @@ commands:
             			"type": "header",
             			"text": {
             				"type": "plain_text",
-            				"text": "<span style="color:green"> Build Passed</span>",
+            				"text": "Build Passed :white_check_mark:",
             				"emoji": true
             			}
             		},
@@ -61,7 +61,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build #(${CIRCLE_BUILD_NUM})[${CIRCLE_BUILD_URL}] passed"
+            				"text": "Build #[${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL}) passed"
             			}
             		}
             	]
