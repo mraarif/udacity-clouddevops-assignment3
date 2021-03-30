@@ -187,6 +187,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             echo "EC2_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output=text)" >> $BASH_ENV
+            echo "$EC2_IP"
             echo "$EC2_IP" >> ".circleci/ansible/inventory.txt"
 
       - persist_to_workspace:
@@ -201,6 +202,8 @@ jobs:
       - image: python:3.8
     steps:
       - checkout
+      - attach_workspace:
+            at: /root/project
       - add_ssh_keys:
           fingerprints:
             - "99:fd:ac:38:59:46:df:c1:e2:09:70:90:24:49:43:36"
