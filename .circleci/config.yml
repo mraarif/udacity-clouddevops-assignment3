@@ -194,7 +194,10 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
 
   configure-infrastructure:
     docker:
@@ -218,8 +221,12 @@ jobs:
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml \
             --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
+
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
       - notify
 
   run-migrations:
@@ -243,7 +250,10 @@ jobs:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   deploy-frontend:
@@ -275,7 +285,10 @@ jobs:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   deploy-backend:
@@ -304,7 +317,10 @@ jobs:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   smoke-test:
@@ -341,7 +357,10 @@ jobs:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   cloudfront-update:
@@ -365,7 +384,10 @@ jobs:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
       - destroy-environment:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   cleanup:
