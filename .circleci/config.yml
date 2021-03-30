@@ -189,6 +189,7 @@ jobs:
             echo "EC2_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output=text)" >> $BASH_ENV
             echo "$EC2_IP"
             echo "$EC2_IP" >> ".circleci/ansible/inventory.txt"
+            cat .circleci/ansible/inventory.txt
 
       - persist_to_workspace:
           root: ~/
