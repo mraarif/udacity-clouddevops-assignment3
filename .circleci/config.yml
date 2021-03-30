@@ -221,7 +221,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ANSIBLE_HOST_KEY_CHECKING=False
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml \
             --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
 
@@ -314,7 +314,7 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            ANSIBLE_HOST_KEY_CHECKING=False
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
