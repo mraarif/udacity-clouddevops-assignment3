@@ -43,48 +43,10 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          custom: |
-            {
-            	"blocks": [
-            		{
-            			"type": "header",
-            			"text": {
-            				"type": "plain_text",
-            				"text": "Build Failed :x:",
-            				"emoji": true
-            			}
-            		},
-            		{
-            			"type": "section",
-            			"text": {
-            				"type": "mrkdwn",
-            				"text": "Build #([${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL})) failed"
-            			}
-            		}
-            	]
-            }
+          template: basic_fail_1
       - slack/notify:
           event: pass
-          custom: |
-            {
-            	"blocks": [
-            		{
-            			"type": "header",
-            			"text": {
-            				"type": "plain_text",
-            				"text": "Build Passed :white_check_mark:",
-            				"emoji": true
-            			}
-            		},
-            		{
-            			"type": "section",
-            			"text": {
-            				"type": "mrkdwn",
-            				"text": "Build #[${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL}) passed"
-            			}
-            		}
-            	]
-            }
+          template: success_tagged_deploy_1
 
 jobs:
   build-frontend:
