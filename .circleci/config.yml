@@ -195,7 +195,6 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-      - notify
 
   configure-infrastructure:
     docker:
