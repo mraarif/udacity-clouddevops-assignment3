@@ -211,6 +211,7 @@ jobs:
           name: Install dependencies
           command: |
             pip install ansible
+            cat .circleci/ansible/inventory.txt
       - run:
           name: Configure server
           command: |
