@@ -1,6 +1,6 @@
 ---
 
-- name: "configuration play." 
+- name: deploy backend
   hosts: web
   user: ubuntu
   become: true
