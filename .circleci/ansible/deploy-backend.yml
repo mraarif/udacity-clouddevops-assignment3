@@ -1,6 +1,4 @@
----
-
-- name: deploy backend
+- name: deploy_backend
   hosts: web
   user: ubuntu
   become: true

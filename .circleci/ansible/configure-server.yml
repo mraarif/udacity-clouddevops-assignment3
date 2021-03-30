@@ -1,6 +1,4 @@
----
-
-- name: configure servers
+- name: "configuration play"
   hosts: web
   become: true
   user: ubuntu
@@ -11,11 +9,11 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    - name: wait 600 seconds for target connection to become reachable/usable
+    - name: "wait 600 seconds for target connection to become reachable/usable"
       pause:
         seconds: 600
 
-    - name: install python for Ansible
+    - name: "install python for Ansible."
       apt:
         pkg:
           - python3.8-dev
@@ -25,4 +23,14 @@
         - install:system-requirements
 
   roles:
-    configure-server
+    - configure-server
+
+  environment:
+    ENVIRONMENT: production
+    TYPEORM_CONNECTION: postgres
+    TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
+    TYPEORM_HOST: "{{ db_host }}"
+    TYPEORM_PORT: 5432
+    TYPEORM_USERNAME: "{{ db_user_name }}"
+    TYPEORM_PASSWORD: "{{ db_password }}"
+    TYPEORM_DATABASE: "{{ db_name }}"
