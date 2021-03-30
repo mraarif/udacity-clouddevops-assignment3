@@ -15,7 +15,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            command: aws cloudformation delete-stack --stack-name <<parameters.workflowId>>
+            aws cloudformation delete-stack --stack-name <<parameters.workflowId>>
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -192,7 +192,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
