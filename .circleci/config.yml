@@ -221,6 +221,7 @@ jobs:
       - run:
           name: Configure server
           command: |
+            ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml \
             --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
 
@@ -313,7 +314,8 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-           ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            ANSIBLE_HOST_KEY_CHECKING=False
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
