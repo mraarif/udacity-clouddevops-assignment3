@@ -192,7 +192,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       - destroy-environment:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -209,6 +209,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apt-get update
+            apt-get install -y awscli
             pip install ansible
             cat .circleci/ansible/inventory.txt
       - run:
