@@ -30,7 +30,7 @@ commands:
           command: |
             curl -H "token: f220e605-9bb6-4ed7-a25e-98165078f73e" --request GET https://api.memstash.io/values/migration_<<parameters.workflowId>>
             SUCCESS = 1
-            if(( $SUCCESS==1 )); 
+            if [[ "$SUCCESS" == 1 ]]
             then
               cd ~/project/backend
               npm install
@@ -261,11 +261,16 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run: yum install -y tar gzip
       - attach_workspace:
           at: /root/project
+      - run: |
+          apt-get update
+          apt-get install awscli -y
+
       - run:
           name: Install dependencies
           command: |
@@ -296,7 +301,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.8
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - add_ssh_keys:
@@ -304,6 +309,11 @@ jobs:
             - "99:fd:ac:38:59:46:df:c1:e2:09:70:90:24:49:43:36"
       - attach_workspace:
           at: /root/project
+      - run: |
+        apt-get update
+        apt-get install python -y
+        apt-get install awscli -y
+
       - run:
           name: Install dependencies
           command: |
