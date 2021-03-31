@@ -303,11 +303,11 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#      - destroy-environment:
+#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   deploy-backend:
@@ -325,7 +325,7 @@ jobs:
           name: install python and aws cli
           command: |
             sudo apt-get update
-            sudo apt-get install python -y
+            sudo apt-get install python3-pip -y
             sudo apt-get install awscli -y
 
       - run:
@@ -344,11 +344,11 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#      - destroy-environment:
+#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   smoke-test:
