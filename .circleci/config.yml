@@ -267,9 +267,11 @@ jobs:
       - run: yum install -y tar gzip
       - attach_workspace:
           at: /root/project
-      - run: |
-          apt-get update
-          apt-get install awscli -y
+      - run:
+          name: install aws cli
+          command: |
+            apt-get update
+            apt-get install awscli -y
 
       - run:
           name: Install dependencies
@@ -309,10 +311,12 @@ jobs:
             - "99:fd:ac:38:59:46:df:c1:e2:09:70:90:24:49:43:36"
       - attach_workspace:
           at: /root/project
-      - run: |
-        apt-get update
-        apt-get install python -y
-        apt-get install awscli -y
+      - run:
+          name: install python and aws cli
+          command: |
+            apt-get update
+            apt-get install python -y
+            apt-get install awscli -y
 
       - run:
           name: Install dependencies
