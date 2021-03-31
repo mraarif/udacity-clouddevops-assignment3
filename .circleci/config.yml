@@ -52,8 +52,9 @@ jobs:
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
+      - run: mkdir -p workspace
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
@@ -63,7 +64,6 @@ jobs:
             cd frontend
             npm i
             npm run build
-      - run: mkdir -p workspace
       - save_cache:
           paths: [ frontend/node_modules ]
           key: frontend-build
@@ -73,7 +73,7 @@ jobs:
   build-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - restore_cache:
@@ -93,7 +93,7 @@ jobs:
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - restore_cache:
@@ -112,7 +112,7 @@ jobs:
   test-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - restore_cache:
@@ -131,7 +131,7 @@ jobs:
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - restore_cache:
@@ -151,7 +151,7 @@ jobs:
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - restore_cache:
@@ -170,7 +170,7 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - run: yum install -y tar gzip
@@ -210,7 +210,7 @@ jobs:
   configure-infrastructure:
     docker:
       - image: python:3.8
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - attach_workspace:
@@ -244,7 +244,7 @@ jobs:
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - run:
@@ -272,7 +272,7 @@ jobs:
   deploy-frontend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - attach_workspace:
@@ -314,7 +314,7 @@ jobs:
   deploy-backend:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - add_ssh_keys:
@@ -355,7 +355,7 @@ jobs:
   smoke-test:
     docker:
       - image: alpine:latest
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - attach_workspace:
@@ -396,7 +396,7 @@ jobs:
   cloudfront-update:
     docker:
        - image: amazon/aws-cli
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       - checkout
       - run:
@@ -424,7 +424,7 @@ jobs:
   cleanup:
     docker:
       - image: amazon/aws-cli
-    working_directory: /tmp
+    working_directory: /tmp/workspace
     steps:
       # Checkout code from git
       - run:
