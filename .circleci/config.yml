@@ -325,7 +325,7 @@ jobs:
           name: install python and aws cli
           command: |
             sudo apt-get update
-            sudo apt-get install python3-pip -y
+            sudo apt-get install python-pip -y
             sudo apt-get install awscli -y
 
       - run:
