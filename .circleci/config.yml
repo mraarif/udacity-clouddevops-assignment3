@@ -264,7 +264,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: yum install -y tar gzip
       - attach_workspace:
           at: /root/project
       - run:
