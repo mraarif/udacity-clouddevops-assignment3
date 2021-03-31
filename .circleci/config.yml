@@ -54,7 +54,6 @@ jobs:
       - image: circleci/node:13.8.0
     working_directory: /tmp/workspace
     steps:
-      - run: mkdir -p workspace
       - checkout
       - restore_cache:
           keys: [ frontend-build ]
