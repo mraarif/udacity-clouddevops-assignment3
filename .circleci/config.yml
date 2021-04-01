@@ -363,13 +363,14 @@ jobs:
     working_directory: /tmp/workspace
     steps:
       - checkout
-      - attach_workspace:
-          at: /root/project
       - run:
           name: Install dependencies
           command: |
             yum install -y tar gzip
             yum install -y jq
+
+      - attach_workspace:
+          at: /root/project
 
       - run:
           name: Get backend url
