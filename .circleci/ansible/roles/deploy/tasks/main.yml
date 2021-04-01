@@ -8,8 +8,13 @@
 #    src: "dist"
 #    dest: "~/web/"
 
+#- name: Copy index test page
+#  command: cp -r /dist/. ~/web/
+
 - name: Copy index test page
-  command: cp -r /dist/. ~/web/
+  synchronize:
+    src: dist/
+    dest: ~/web/
 
 - name: Executing node
   shell: |
