@@ -12,10 +12,9 @@
 #  command: cp -r /dist/. ~/web/
 
 - name: install rsync on the ansible controller
-  connection: local
-  package:
-    name: rsync
-    state: present
+  shell: |
+    apt install ssh
+    apt install rsync
 
 - name: Copy index test page
   synchronize:
