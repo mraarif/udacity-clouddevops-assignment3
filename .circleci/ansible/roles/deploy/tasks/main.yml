@@ -11,6 +11,12 @@
 #- name: Copy index test page
 #  command: cp -r /dist/. ~/web/
 
+- name: install rsync on the ansible controller
+  connection: local
+  package:
+    name: rsync
+    state: present
+
 - name: Copy index test page
   synchronize:
     src: dist/
