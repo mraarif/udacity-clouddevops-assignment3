@@ -338,10 +338,12 @@ jobs:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
+            ls
+            pwd
             cd backend
             npm i
             npm run-script build
-            cp -R dist .circleci/ansible/roles/deploy/files/
+            cp -R dist ../.circleci/ansible/roles/deploy/files/
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
