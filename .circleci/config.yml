@@ -334,8 +334,6 @@ jobs:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            ls
-            pwd
             cd backend
             npm i
             npm run-script build
