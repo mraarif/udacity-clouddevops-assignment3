@@ -342,6 +342,7 @@ jobs:
             cp -R dist ../.circleci/ansible/roles/deploy/files/
             cd ..
             cat .circleci/ansible/inventory.txt
+            ls .circleci/ansible/roles/deploy/files/
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
