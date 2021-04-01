@@ -376,6 +376,7 @@ jobs:
           name: Backend smoke test
           command: |
             BACKEND_IP=$(sed -n '2p' .circleci/ansible/inventory.txt)
+            echo $BACKEND_IP
             curl "http://${BACKEND_IP}:3030/api/status"
       - run:
           name: Frontend smoke test.
