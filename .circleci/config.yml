@@ -312,7 +312,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.8
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -324,16 +324,12 @@ jobs:
       - run:
           name: install python and aws cli
           command: |
-            sudo apt-get update
-            sudo apt-get install python3-pip -y
-            sudo apt-get install awscli -y
+            apt-get update
+            apt-get install -y awscli
+            pip install ansible
+            curl -sL https://deb.nodesource.com/setup_12.x | bash -
+            apt install nodejs
 
-      - run:
-          name: Install dependencies
-          command: |
-            pip3 install ansible
-            ls
-            pwd
       - run:
           name: Deploy backend
           command: |
