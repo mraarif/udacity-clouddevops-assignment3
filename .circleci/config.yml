@@ -340,8 +340,8 @@ jobs:
             export ANSIBLE_HOST_KEY_CHECKING=False
             cd backend
             npm i
-            npm build
-            cp -R .dist .circleci/ansible/roles/deploy/files/
+            npm run-script build
+            cp -R dist .circleci/ansible/roles/deploy/files/
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
