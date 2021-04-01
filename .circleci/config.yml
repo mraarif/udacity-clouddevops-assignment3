@@ -368,7 +368,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add curl
+            yum install -y tar gzip
+            yum install -y jq
+
       - run:
           name: Get backend url
           command: |
