@@ -1,6 +1,6 @@
 - name: Copy index test page
   template:
-    src: "backend/.dist"
+    src: "/tmp/workspace/backend/.dist"
     dest: "~/web/"
 
 - name: Executing node

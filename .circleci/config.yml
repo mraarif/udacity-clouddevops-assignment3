@@ -29,10 +29,10 @@ commands:
           when: on_fail
           command: |
             curl -H "token: f220e605-9bb6-4ed7-a25e-98165078f73e" --request GET https://api.memstash.io/values/migration_<<parameters.workflowId>>
-            SUCCESS = 1
+            SUCCESS=1
             if [[ "$SUCCESS" == 1 ]]
             then
-              cd ~/project/backend
+              cd /tmp/workspace/backend
               npm install
               npm run migrations:revert
               exit 1
@@ -325,13 +325,13 @@ jobs:
           name: install python and aws cli
           command: |
             sudo apt-get update
-            sudo apt-get install python-pip -y
+            sudo apt-get install python3-pip -y
             sudo apt-get install awscli -y
 
       - run:
           name: Install dependencies
           command: |
-            pip install ansible
+            pip3 install ansible
             cd backend
             npm i
             npm build
