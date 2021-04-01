@@ -290,7 +290,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            BACKEND_IP=$(cat .circleci/ansible/inventory.txt)
+            BACKEND_IP=$(sed -n '2p' .circleci/ansible/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
@@ -359,7 +359,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: alpine:latest
+      - image: amazon/aws-cli
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -368,7 +368,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install curl
+            apk add curl
       - run:
           name: Get backend url
           command: |
@@ -388,14 +388,14 @@ jobs:
               return 0
             fi
 
-      - revert-migrations:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#      - revert-migrations:
+#          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   cloudfront-update:
@@ -416,14 +416,14 @@ jobs:
               --tags project=assignment3 \
               --stack-name "stack-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
-      - revert-migrations:
-          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#      - revert-migrations:
+#          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+#
+#      - destroy-environment:
+#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   cleanup:
