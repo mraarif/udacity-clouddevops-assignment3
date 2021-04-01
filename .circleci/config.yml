@@ -344,7 +344,8 @@ jobs:
             npm i
             npm run-script build
             cp -R dist ../.circleci/ansible/roles/deploy/files/
-            ansible-playbook -i ../.circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            cd ..
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
