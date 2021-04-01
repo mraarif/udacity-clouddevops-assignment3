@@ -11,13 +11,8 @@
 #- name: Copy index test page
 #  command: cp -r /dist/. ~/web/
 
-- name: install rsync on the ansible controller
-  shell: |
-    apt install ssh
-    apt install rsync
-
 - name: Copy index test page
-  synchronize:
+  copy:
     src: dist/
     dest: ~/web/
 
