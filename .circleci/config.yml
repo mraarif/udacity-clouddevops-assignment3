@@ -334,14 +334,14 @@ jobs:
             pip3 install ansible
             ls
             pwd
-            cd backend
-            npm i
-            npm build
       - run:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            cp -R backend/.dist/ .circleci/ansible/roles/deploy/files/
+            cd backend
+            npm i
+            npm build
+            cp -R .dist .circleci/ansible/roles/deploy/files/
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
       - revert-migrations:
