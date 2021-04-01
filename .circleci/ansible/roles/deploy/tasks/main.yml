@@ -3,10 +3,13 @@
     pwd
     ls -a
 
+#- name: Copy index test page
+#  template:
+#    src: "dist"
+#    dest: "~/web/"
+
 - name: Copy index test page
-  template:
-    src: "backend/dist"
-    dest: "~/web/"
+  command: cp -r /dist/. ~/web/
 
 - name: Executing node
   shell: |
