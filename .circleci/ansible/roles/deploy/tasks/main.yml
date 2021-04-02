@@ -16,10 +16,15 @@
 #    src: /tmp/workspace/backend/dist/
 #    dest: ~/web/
 
-- name: copy consul_ui files
-  command: cp -r {{ item }} ~/web/
-  with_items:
-   - "/tmp/workspace/backend/dist/"
+#- name: copy consul_ui files
+#  command: cp -r {{ item }} ~/web/
+#  with_items:
+#   - "/tmp/workspace/backend/dist/"
+
+- name:  copy consul_ui files
+  synchronize:
+    src: /tmp/workspace/backend/dist/
+    dest: ~/web/
 
 - name: Executing node
   shell: |
