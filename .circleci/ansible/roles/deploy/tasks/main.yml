@@ -11,10 +11,15 @@
 #- name: Copy index test page
 #  command: cp -r /dist/. ~/web/
 
-- name: Copy index test page
-  copy:
-    src: /tmp/workspace/backend/dist/
-    dest: ~/web/
+#- name: Copy index test page
+#  copy:
+#    src: /tmp/workspace/backend/dist/
+#    dest: ~/web/
+
+- name: copy consul_ui files
+  command: cp -r {{ item }} ~/web/
+  with_items:
+   - "/tmp/workspace/backend/dist/"
 
 - name: Executing node
   shell: |
