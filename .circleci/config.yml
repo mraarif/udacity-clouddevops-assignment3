@@ -270,7 +270,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: ubuntu:latest
+      - image: nikolaik/python-nodejs:python3.8-nodejs14
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -281,8 +281,6 @@ jobs:
           command: |
             apt-get update
             apt-get install -y awscli
-            curl -sL https://deb.nodesource.com/setup_12.x | bash -
-            apt install -y nodejs
 
       - run:
           name: Install dependencies
@@ -314,7 +312,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: ubuntu:latest
+      - image: nikolaik/python-nodejs:python3.8-nodejs14
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -327,12 +325,8 @@ jobs:
           name: install python and aws cli
           command: |
             apt-get update
-            apt-get install -y python3-dev
-            apt-get install -y python3-pip
             apt-get install -y awscli
-            pip3 install ansible
-            curl -sL https://deb.nodesource.com/setup_12.x | bash -
-            apt install -y nodejs
+            pip install ansible
 
       - run:
           name: Deploy backend
