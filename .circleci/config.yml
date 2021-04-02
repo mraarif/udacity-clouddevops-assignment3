@@ -270,7 +270,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: ubuntu:latest
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -279,8 +279,10 @@ jobs:
       - run:
           name: install aws cli
           command: |
-            sudo apt-get update
-            sudo apt-get install awscli -y
+            apt-get update
+            apt-get install -y awscli
+            curl -sL https://deb.nodesource.com/setup_12.x | bash -
+            apt install nodejs
 
       - run:
           name: Install dependencies
@@ -312,7 +314,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.8
+      - image: ubuntu:latest
     working_directory: /tmp/workspace
     steps:
       - checkout
@@ -325,8 +327,10 @@ jobs:
           name: install python and aws cli
           command: |
             apt-get update
+            apt-get install -y python3-dev
+            apt-get install -y python3-pip
             apt-get install -y awscli
-            pip install ansible
+            pip3 install ansible
             curl -sL https://deb.nodesource.com/setup_12.x | bash -
             apt install nodejs
 
