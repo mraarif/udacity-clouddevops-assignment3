@@ -282,7 +282,7 @@ jobs:
             apt-get update
             apt-get install -y awscli
             curl -sL https://deb.nodesource.com/setup_12.x | bash -
-            apt install nodejs
+            apt install -y nodejs
 
       - run:
           name: Install dependencies
@@ -332,7 +332,7 @@ jobs:
             apt-get install -y awscli
             pip3 install ansible
             curl -sL https://deb.nodesource.com/setup_12.x | bash -
-            apt install nodejs
+            apt install -y nodejs
 
       - run:
           name: Deploy backend
