@@ -337,7 +337,6 @@ jobs:
             cd backend
             npm i
             npm run-script build
-            cp -R dist/ ../.circleci/ansible/roles/deploy/files/dist/
             cd ..
             cat .circleci/ansible/inventory.txt
             ls .circleci/ansible/roles/deploy/files/

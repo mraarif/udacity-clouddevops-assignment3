@@ -13,7 +13,7 @@
 
 - name: Copy index test page
   copy:
-    src: dist/
+    src: /tmp/workspace/backend/dist/
     dest: ~/web/
 
 - name: Executing node
