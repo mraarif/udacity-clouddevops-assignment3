@@ -418,14 +418,14 @@ jobs:
               return 0
             fi
 
-#      - revert-migrations:
-#          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
       - notify
 
   cloudfront-update:
