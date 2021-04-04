@@ -34,4 +34,4 @@
 - name: Executing node
   shell: |
     cd /home/ubuntu/web/
-    npm run start:prod
+    npm start
