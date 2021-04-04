@@ -1,49 +1,34 @@
-- name: print directory info
-  shell: |
-    pwd
-    ls -a
-
-#- name: Copy index test page
-#  template:
-#    src: "dist"
-#    dest: "~/web/"
-
-#- name: Copy index test page
-#  command: cp -r /dist/. ~/web/
-
-#- name: Copy index test page
-#  copy:
-#    src: /tmp/workspace/backend/dist/
-#    dest: ~/web/
-
-#- name: copy consul_ui files
-#  command: cp -r {{ item }} ~/web/
-#  with_items:
-#   - "/tmp/workspace/backend/dist/"
-
 - name: copy backend app
   synchronize:
-    src: /tmp/workspace/backend/
+    src:  /tmp/workspace/backend/dist/
     dest: ~/web/
 
-- name: Echo my_env_var
-  shell: "echo $TYPEORM_CONNECTION"
-  environment:
-    ENVIRONMENT: production
-    TYPEORM_CONNECTION: postgres
-    TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
-    TYPEORM_HOST: "{{ db_host }}"
-    TYPEORM_PORT: 5432
-    TYPEORM_USERNAME: "{{ db_user_name }}"
-    TYPEORM_PASSWORD: "{{ db_password }}"
-    TYPEORM_DATABASE: "{{ db_name }}"
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value}}"
+  with_items:
+    - key: ENVIRONMENT
+      value: production
+    - key: TYPEORM_CONNECTION
+      value: postgres
+    - key: TYPEORM_ENTITIES
+      value: "./src/modules/domain/**/*.entity.ts"
+    - key: TYPEORM_HOST
+      value: "{{ lookup('env', 'TYPEORM_HOST') }}"
+    - key: TYPEORM_PORT
+      value: 5432
+    - key: TYPEORM_USERNAME
+      value: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+    - key: TYPEORM_PASSWORD
+      value: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+    - key: TYPEORM_DATABASE
+      value: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
 
-- name: install dependencies
-  shell: |
-    cd /home/ubuntu/web/
-    npm i
 
 - name: Executing node
   shell: |
     cd /home/ubuntu/web/
-    npm start
+    pm2 start main.js
