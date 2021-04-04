@@ -58,7 +58,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build #([${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL})) failed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> failed"
             			}
             		}
             	]
@@ -81,7 +81,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build #[${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL}) passed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> passed"
             			}
             		}
             	]
@@ -376,7 +376,8 @@ jobs:
             cd backend
             npm i
             npm run-script build
-            cp -R dist/ ../.circleci/ansible/roles/deploy/files/dist/
+            directory=../.circleci/ansible/roles/deploy/files/dist/
+            mkdir -p "$directory" && cp -R dist/ "$directory"
             cd ..
             cat .circleci/ansible/inventory.txt
             ls .circleci/ansible/roles/deploy/files/
