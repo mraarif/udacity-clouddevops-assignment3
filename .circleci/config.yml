@@ -373,14 +373,9 @@ jobs:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            cd backend
-            npm i
-            npm run-script build
             directory=../.circleci/ansible/roles/deploy/files/dist/
-            mkdir -p "$directory" && cp -R dist/ "$directory"
-            cd ..
+            mkdir -p "$directory" && cp -R backend/ "$directory"
             cat .circleci/ansible/inventory.txt
-            ls .circleci/ansible/roles/deploy/files/
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml \
             --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
 
