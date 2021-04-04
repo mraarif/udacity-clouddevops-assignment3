@@ -373,10 +373,6 @@ jobs:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            cd backend
-            npm i
-            npm run-script build
-            cd ..
             cat .circleci/ansible/inventory.txt
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
 
@@ -465,19 +461,22 @@ jobs:
       - image: amazon/aws-cli
     working_directory: /tmp/workspace
     steps:
-      # Checkout code from git
       - run:
           name: Get old stack workflow id
           command: |
             # your code here
-            export OldWorkflowID="the id here"
-            export STACKS=[] #put the list of stacks here
+            export OldWorkflowID=$(aws cloudformation \
+                list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                --no-paginate --output text)
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
       - run:
           name: Remove old stacks and files
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              # your code here
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
             fi
 
 workflows:
@@ -505,7 +504,6 @@ workflows:
           requires: [ run-migrations ]
       - smoke-test:
           requires: [ deploy-backend, deploy-frontend ]
-          #requires: [ deploy-backend ]
       - cloudfront-update:
           requires: [ smoke-test ]
 #      - cleanup:

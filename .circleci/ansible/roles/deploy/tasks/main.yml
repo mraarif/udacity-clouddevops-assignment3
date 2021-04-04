@@ -1,6 +1,6 @@
 - name: copy backend app
   synchronize:
-    src:  /tmp/workspace/backend/dist/
+    src:  /tmp/workspace/backend/
     dest: ~/web/
 
 - name: populate /etc/environment
@@ -31,4 +31,5 @@
 - name: Executing node
   shell: |
     cd /home/ubuntu/web/
-    pm2 start main.js
+    npm i
+    pm2 start npm -- start
