@@ -43,10 +43,50 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          template: basic_fail_1
+          custom: |
+            {
+            	"blocks": [
+            		{
+            			"type": "header",
+            			"text": {
+            				"type": "plain_text",
+            				"text": "Build Failed :x:",
+            				"emoji": true
+            			}
+            		},
+            		{
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": "Build #([${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL})) failed"
+            			}
+            		}
+            	]
+            }
+
       - slack/notify:
           event: pass
-          template: success_tagged_deploy_1
+          custom: |
+            {
+            	"blocks": [
+            		{
+            			"type": "header",
+            			"text": {
+            				"type": "plain_text",
+            				"text": "Build Passed :white_check_mark:",
+            				"emoji": true
+            			}
+            		},
+            		{
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": "Build #[${CIRCLE_BUILD_NUM}](${CIRCLE_BUILD_URL}) passed"
+            			}
+            		}
+            	]
+            }
+
 
 jobs:
   build-frontend:
@@ -333,8 +373,15 @@ jobs:
           name: Deploy backend
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
+            cd backend
+            npm i
+            npm run-script build
+            cp -R dist/ ../.circleci/ansible/roles/deploy/files/dist/
+            cd ..
             cat .circleci/ansible/inventory.txt
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            ls .circleci/ansible/roles/deploy/files/
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml \
+            --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
 
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"

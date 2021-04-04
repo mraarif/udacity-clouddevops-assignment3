@@ -23,15 +23,10 @@
 
 - name: copy backend app
   synchronize:
-    src: /tmp/workspace/backend/
+    src: /tmp/workspace/backend/dist/
     dest: ~/web/
-
-- name: install dependencies
-  shell: |
-    cd /home/ubuntu/web/
-    npm i
 
 - name: Executing node
   shell: |
     cd /home/ubuntu/web/
-    pm2 start npm -- start
+    pm2 start ~/web/main.js -f
