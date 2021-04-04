@@ -29,4 +29,4 @@
 - name: Executing node
   shell: |
     cd /home/ubuntu/web/
-    pm2 start ~/web/main.js -f
+    pm2 start /home/ubuntu/web/main.js -f
