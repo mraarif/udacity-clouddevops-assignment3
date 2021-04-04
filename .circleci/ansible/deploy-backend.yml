@@ -9,13 +9,3 @@
     - ansible_stdout_callback: yaml
   roles:
     - deploy
-
-  environment:
-    ENVIRONMENT: production
-    TYPEORM_CONNECTION: postgres
-    TYPEORM_ENTITIES: "./src/modules/domain/**/*.entity.ts"
-    TYPEORM_HOST: "{{ db_host }}"
-    TYPEORM_PORT: 5432
-    TYPEORM_USERNAME: "{{ db_user_name }}"
-    TYPEORM_PASSWORD: "{{ db_password }}"
-    TYPEORM_DATABASE: "{{ db_name }}"
