@@ -15,7 +15,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name <<parameters.workflowId>>
+            aws s3 rm "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
+            aws cloudformation delete-stack --stack-name "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -35,7 +37,6 @@ commands:
               cd /tmp/workspace/backend
               npm install
               npm run migrations:revert
-              exit 1
             fi
 
   notify:
@@ -240,11 +241,8 @@ jobs:
           root: /tmp/workspace
           paths:
             - .circleci/ansible/inventory.txt
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment
+#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
 
   configure-infrastructure:
     docker:
@@ -260,8 +258,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            pwd
-            ls
             apt-get update
             apt-get install -y awscli
             pip install ansible
@@ -270,14 +266,9 @@ jobs:
           name: Configure server
           command: |
             export ANSIBLE_HOST_KEY_CHECKING=False
-            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml \
-            --extra-vars 'db_host=${TYPEORM_HOST} db_user_name=${TYPEORM_USERNAME} db_password=${TYPEORM_PASSWORD} db_name=${TYPEORM_DATABASE}'
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
+      - destroy-environment
       - notify
 
   run-migrations:
@@ -301,11 +292,7 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment
       - notify
 
   deploy-frontend:
@@ -343,11 +330,7 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-#      - destroy-environment:
-#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment
       - notify
 
   deploy-backend:
@@ -379,11 +362,7 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-#      - destroy-environment:
-#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+      - destroy-environment
       - notify
 
   smoke-test:
@@ -421,12 +400,7 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
+      - destroy-environment
       - notify
 
   cloudfront-update:
@@ -452,12 +426,7 @@ jobs:
       - revert-migrations:
           workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
 
-      - destroy-environment:
-          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
-      - destroy-environment:
-          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-
+      - destroy-environment
       - notify
 
   cleanup:
