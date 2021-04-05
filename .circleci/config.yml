@@ -392,6 +392,9 @@ jobs:
     working_directory: /tmp/workspace
     steps:
       - checkout
+      - run: |
+          yum install epel-release -y
+          yum install jq -y
       - run:
           name: Update cloudfront distribution
           command: |
