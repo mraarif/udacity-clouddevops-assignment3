@@ -403,12 +403,6 @@ jobs:
             echo New workflow Id: "${newWorkflowID}"
             echo Old workflow Id: "${OldWorkflowID}"
 
-            aws cloudformation deploy \
-            --template-file .circleci/files/cloudfront.yml \
-            --tags project=assignment3 \
-            --stack-name "cloudfront-stack-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
-
             if [[ "$CurrentWorkflowID" != "$OldWorkflowID" ]] && [[ -n "$OldWorkflowID" ]]
             then
               echo deleting old stuff
@@ -416,6 +410,12 @@ jobs:
               aws cloudformation delete-stack --stack-name "frontend-stack-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "backend-stack-${OldWorkflowID}"
             fi
+
+            aws cloudformation deploy \
+            --template-file .circleci/files/cloudfront.yml \
+            --tags project=assignment3 \
+            --stack-name "cloudfront-stack-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
 
 #      - destroy-environment
       - notify
