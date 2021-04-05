@@ -58,7 +58,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> failed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: $CIRCLE_JOB failed"
             			}
             		}
             	]
@@ -81,7 +81,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> passed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: $CIRCLE_JOB passed"
             			}
             		}
             	]
@@ -388,15 +388,15 @@ jobs:
 
   smoke-test:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     working_directory: /tmp/workspace
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            yum install -y tar gzip
-            yum install -y jq
+            apt-get update
+            apt-get awscli
 
       - attach_workspace:
           at: /tmp/workspace
@@ -426,34 +426,38 @@ jobs:
 
       - destroy-environment:
           workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
       - notify
 
   cloudfront-update:
     docker:
-       - image: amazon/aws-cli
+       - image: circleci/node:13.8.0
     working_directory: /tmp/workspace
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            pip install ansible
+            apt-get update
+            apt-get install awscli
       - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --tags project=assignment3 \
-              --stack-name "stack-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --stack-name "cloudfront-stack-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
-#      - revert-migrations:
-#          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
-#
-#      - destroy-environment:
-#          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - revert-migrations:
+          workflowId: "${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "frontend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
+      - destroy-environment:
+          workflowId: "backend-stack-${CIRCLE_WORKFLOW_ID:0:7}"
+
       - notify
 
   cleanup:
