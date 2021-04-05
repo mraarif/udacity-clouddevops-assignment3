@@ -304,14 +304,11 @@ jobs:
             cd frontend
             npm i
       - run:
-          name: Get backend url
+          name: Deploy frontend objects
           command: |
             BACKEND_IP=$(sed -n '2p' .circleci/ansible/inventory.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-      - run:
-          name: Deploy frontend objects
-          command: |
             cd frontend
             npm run build
             aws s3 cp ./dist s3://"udapeople-${CIRCLE_WORKFLOW_ID:0:7}"/ --recursive
@@ -401,9 +398,9 @@ jobs:
             export OldWorkflowID=$(aws cloudformation \
                 list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                 --no-paginate --output text)
-            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-                --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
 
+            export newWorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
+            echo New workflow Id: "${newWorkflowID}"
             echo Old workflow Id: "${OldWorkflowID}"
 
             aws cloudformation deploy \
@@ -412,7 +409,7 @@ jobs:
             --stack-name "cloudfront-stack-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
 
-            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
+            if [[ "$CurrentWorkflowID" != "$OldWorkflowID" ]] && [[ -n "$OldWorkflowID" ]]
             then
               echo deleting old stuff
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
