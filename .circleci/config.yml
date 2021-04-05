@@ -59,7 +59,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: $CIRCLE_JOB failed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: *$CIRCLE_JOB* failed"
             			}
             		}
             	]
@@ -82,7 +82,7 @@ commands:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: $CIRCLE_JOB passed"
+            				"text": "Build <$CIRCLE_BUILD_URL|#$CIRCLE_BUILD_NUM> for: *$CIRCLE_JOB* passed"
             			}
             		}
             	]
@@ -389,12 +389,12 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com"
             if curl -s ${URL} | grep "Welcome"
             then
-              return 1
-            else
               return 0
+            else
+              return 1
             fi
 
       - revert-migrations:
