@@ -393,7 +393,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          yum install epel-release -y
+          yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
           yum install jq -y
       - run:
           name: Update cloudfront distribution
