@@ -1,0 +1,5 @@
+1. (Github Repo)          URL01: https://github.com/mraarif/udacity-clouddevops-assignment3/
+2. (S3 Bucket - frontend) URL02: http://udapeople-221f053.s3-website-us-west-2.amazonaws.com/
+3. (CloudFront)           ULR03: http://d8u1cb0dtqf8f.cloudfront.net/
+4. (server's public url)  URL04: http://ec2-54-218-93-5.us-west-2.compute.amazonaws.com:3030/
+5. (Prometheus server)    URL05: http://52.11.35.26:9090/
