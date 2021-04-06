@@ -1,0 +1,35 @@
+- name: copy backend app
+  synchronize:
+    src:  /tmp/workspace/backend/
+    dest: ~/web/
+
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value}}"
+  with_items:
+    - key: ENVIRONMENT
+      value: production
+    - key: TYPEORM_CONNECTION
+      value: postgres
+    - key: TYPEORM_ENTITIES
+      value: "./src/modules/domain/**/*.entity.ts"
+    - key: TYPEORM_HOST
+      value: "{{ lookup('env', 'TYPEORM_HOST') }}"
+    - key: TYPEORM_PORT
+      value: 5432
+    - key: TYPEORM_USERNAME
+      value: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+    - key: TYPEORM_PASSWORD
+      value: "{{ lookup('env', 'TYPEORM_PASSWORD') }}"
+    - key: TYPEORM_DATABASE
+      value: "{{ lookup('env', 'TYPEORM_DATABASE') }}"
+
+
+- name: Executing node
+  shell: |
+    cd /home/ubuntu/web/
+    npm i
+    pm2 start npm -- start
