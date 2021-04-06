@@ -418,6 +418,9 @@ jobs:
             --stack-name "cloudfront-stack-${CIRCLE_WORKFLOW_ID:0:7}" \
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
 
+          environment:
+            TERM: xterm-color
+
       - destroy-environment
       - notify
 
