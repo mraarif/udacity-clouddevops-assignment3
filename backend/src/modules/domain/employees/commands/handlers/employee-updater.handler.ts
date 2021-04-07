@@ -47,6 +47,7 @@ export class EmployeeUpdater extends BaseCommandHandler<UpdateEmployee, void> {
     employee.displayName = displayName;
     employee.companyEmail = companyEmail;
     employee.personalEmail = personalEmail;
+    // @ts-ignore
     employee.birthdate = moment(birthdate)
       .utc()
       .format();
@@ -58,6 +59,7 @@ export class EmployeeUpdater extends BaseCommandHandler<UpdateEmployee, void> {
     employee.city = city;
     employee.salary = +salary;
     employee.salaryType = SalaryType[salaryTypeKey];
+    // @ts-ignore
     employee.effectiveDate = moment(effectiveDate)
       .utc()
       .format();

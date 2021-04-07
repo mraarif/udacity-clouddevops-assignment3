@@ -19,6 +19,7 @@ export class EmployeeBirthDateUpdater extends BaseCommandHandler<UpdateEmployeeB
 
     const employee = await this.employeeRepository.findById(employeeId);
 
+    // @ts-ignore
     employee.birthdate = moment(birthdate)
     .utc()
     .format();
